@@ -1,16 +1,18 @@
 # Project Memory
 
-> Never lose the "why" behind your code.
+> Never lose the **"why"** behind your code.
 
 ## Overview
 
 Project Memory is an AI-powered engineering memory system that helps software teams reconstruct the context behind technical decisions.
 
-Unlike traditional RAG applications that simply retrieve documents, Project Memory connects meetings, Jira tickets, pull requests, commits, and documentation to explain why a decision was made, how it evolved, and what happened afterwards.
+Unlike traditional RAG applications that simply retrieve documents, Project Memory connects meetings, Jira tickets, pull requests, commits, and documentation to explain **why** a decision was made, **how** it evolved, and **what** happened afterwards.
 
 The goal is not to search documents.
 
 The goal is to reconstruct engineering decisions.
+
+---
 
 ## The Problem
 
@@ -33,10 +35,13 @@ As projects grow, this knowledge becomes scattered across multiple tools and is 
 
 Project Memory brings this context back together.
 
+---
+
 ## Vision
 
 To become the engineering team's long-term memory by preserving and reconstructing the reasoning behind technical decisions.
 
+---
 
 ## MVP Goal
 
@@ -48,6 +53,7 @@ The first version of Project Memory will allow users to:
 - Ask "WHY" questions instead of simple document searches
 - Generate a timeline explaining how a technical decision evolved
 
+---
 
 ## Project Status
 
@@ -55,6 +61,7 @@ The first version of Project Memory will allow users to:
 
 Phase 1 focuses on building the data ingestion and context foundation.
 
+---
 
 ## Roadmap
 
@@ -64,12 +71,15 @@ Phase 1 focuses on building the data ingestion and context foundation.
 
 Detailed roadmap is available in `/docs/roadmap.md`.
 
+---
 
 ## Documentation
 
 - Vision
+- Princiles
 - Roadmap
 - Architecture Decisions (ADR)
 - Progress Log
+- Questions
 
 Documentation is maintained inside the `/docs` directory.
