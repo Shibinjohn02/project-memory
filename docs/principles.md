@@ -87,3 +87,15 @@ Every feature should make Project Memory easier to use, not more complicated.
 Documentation should support development.
 
 Development should never stop because of documentation.
+
+---
+
+## Principle 012
+
+Project Memory stores knowledge, not documents.
+
+---
+
+## Principle 013
+
+Build with free resources first. Paid services should be optional, not required.
