@@ -1,19 +1,3 @@
-## Starting a New Chat
-
-Whenever a new conversation is started, use the following prompt:
-
-```
-This is a continuation of Project Memory.
-
-Please read the following files before responding:
-
-1. README.md
-2. docs/working-agreement.md
-3. docs/progress.md
-
-After reading them, continue from where we left off.
-```
-
 # Working Agreement
 
 This document defines how Project Memory should be developed.
@@ -79,3 +63,27 @@ For every task:
 - Ask questions whenever something is unclear.
 - Avoid skipping steps.
 - Keep commits clean and meaningful.
+
+
+## Starting a New Chat
+
+Whenever a new conversation is started, use the following prompt:
+
+```
+This is a continuation of my Project Memory project.
+
+Before responding, please read these files in order:
+
+1. README.md
+2. docs/working-agreement.md
+3. docs/progress.md
+
+Treat these documents as the source of truth.
+
+After reading them:
+
+- Understand the current progress.
+- Continue from the current task only.
+- Do not redesign completed work unless there is a strong engineering reason.
+- Follow the Working Agreement throughout the conversation.
+```
