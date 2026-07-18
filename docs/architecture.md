@@ -39,3 +39,24 @@ Future components
 - Decision Graph
 - Timeline Generator
 - Integrations
+
+---
+
+## Knowledge Processing Pipeline
+
+Reader
+↓
+Parser
+↓
+Extractor
+↓
+Reasoner (AI)
+↓
+Storage
+
+### Responsibilities
+
+- Reader: Converts file bytes into text.
+- Parser: Cleans and normalizes text.
+- Extractor: Extracts structured facts.
+- Reasoner: Generates insights and explains WHY.

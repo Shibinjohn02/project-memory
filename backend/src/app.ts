@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import { documentRoutes } from "./modules/documents";
+import { errorHandler } from "./common/errors/error-handler"
 
 const app = express();
 
@@ -16,5 +18,10 @@ app.get("/health", (_, res) => {
         message: "Project Memory API is running."
     });
 });
+
+app.use("/documents", documentRoutes);
+
+// ALWAYS LAST
+app.use(errorHandler);
 
 export default app;

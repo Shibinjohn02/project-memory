@@ -87,3 +87,13 @@ After reading them:
 - Do not redesign completed work unless there is a strong engineering reason.
 - Follow the Working Agreement throughout the conversation.
 ```
+
+## Project Notes
+
+- Register the global error handler as the last middleware in `app.ts`.
+
+## Learning Rule
+
+Whenever a design pattern or system design principle naturally fits a real problem, prefer using it instead of a simpler approach.
+
+The goal is not to use patterns everywhere, but to understand and apply them only when they provide a clear benefit.

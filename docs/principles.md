@@ -99,3 +99,13 @@ Project Memory stores knowledge, not documents.
 ## Principle 013
 
 Build with free resources first. Paid services should be optional, not required.
+
+---
+
+## Principle 014
+
+Do not introduce abstraction without responsibility.
+
+Every layer should have a clear purpose.
+
+---
