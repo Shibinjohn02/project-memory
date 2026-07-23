@@ -60,3 +60,34 @@ Storage
 - Parser: Cleans and normalizes text.
 - Extractor: Extracts structured facts.
 - Reasoner: Generates insights and explains WHY.
+
+## Current Project Structure
+
+backend/
+└── src/
+    ├── common/
+    │   ├── errors/
+    |   |-extractors/
+    ├── extractor.factory.ts
+    ├── extractor.interface.ts
+    └── meeting.extractor.ts
+    │   ├── files/
+    │   ├── http/
+    │   ├── middleware/
+    │   ├── parsers/
+    │   ├── responses/
+    │   └── validation/
+    │
+    ├── config/
+    |
+    ├── modules/
+    │   └── documents/
+    │       ├── schemas/
+    │       ├── document.controller.ts
+    │       ├── document.routes.ts
+    │       ├── document.service.ts
+    │       ├── document.types.ts
+    │       └── index.ts
+    │
+    ├── app.ts
+    └── server.ts

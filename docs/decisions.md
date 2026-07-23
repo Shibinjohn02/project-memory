@@ -271,3 +271,64 @@ Use Zod for request validation.
 - Runtime validation
 - Type inference
 - Reusable schemas
+
+---
+
+# ADR-013: Document Processing Pipeline
+
+## Status
+
+Accepted
+
+## Decision
+
+Document processing follows a staged pipeline:
+
+Reader
+→ Parser
+→ Extractor
+→ Knowledge Builder
+→ Repository
+
+## Why?
+
+- Clear responsibilities
+- Easy to extend
+- AI can replace Extractor without affecting downstream layers
+
+---
+
+# ADR-014: Centralized Sequelize Instance
+
+## Status
+
+Accepted
+
+## Decision
+
+A single shared Sequelize instance will be used across the application.
+
+## Why?
+
+- One connection configuration
+- Easy model registration
+- Standard Sequelize project structure
+
+---
+
+# ADR-015: Database Schema Management
+
+## Status
+
+Accepted
+
+## Decision
+
+During development, Sequelize `sync()` will be used to create and update tables.
+
+Before production, database schema changes will be managed through migrations.
+
+## Why?
+
+- Faster iteration during development.
+- Industry-standard deployment process for production.
