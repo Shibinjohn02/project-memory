@@ -5,10 +5,6 @@ export async function initializeDatabase() {
   await sequelize.authenticate();
   console.log("Database connected.");
 
-  await sequelize.sync();
+  await sequelize.sync({ alter: true });
   console.log("Database synchronized.");
-
-  // Future
-  // await redis.connect();
-  // await queue.initialize();
 }

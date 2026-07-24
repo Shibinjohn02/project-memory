@@ -8,5 +8,7 @@ const router = Router();
 
 router.get("/health", documentController.health);
 router.post("/upload", upload.single("file"), validate(uploadDocumentSchema), documentController.upload);
+router.get("/:id", documentController.getById);
+router.get("/", documentController.getAll);
 
 export default router;

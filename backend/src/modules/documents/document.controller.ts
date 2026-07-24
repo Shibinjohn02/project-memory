@@ -9,15 +9,29 @@ export const documentController = {
         res.status(200).json(successResponse(response));
     },
 
-    upload(req: Request, res: Response) {
+    async upload(req: Request, res: Response) {
         const file = req.file;
 
         if (!file) {
             throw new Error("No file uploaded.");
         }
 
-        const response = documentService.upload(file, req.body.source);
+        const response = await documentService.upload(file, req.body.source);
 
         res.status(201).json(successResponse(response));
+    },
+
+    async getById(req: Request, res: Response) {
+        const id = Number(req.params.id);
+
+        const document = await documentService.getById(id);
+
+        res.status(200).json(successResponse(document));
+    },
+
+    async getAll(req: Request, res: Response) {
+        const documents = await documentService.getAll();
+
+        res.status(200).json(successResponse(documents));
     }
 };

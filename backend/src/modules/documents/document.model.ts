@@ -1,4 +1,5 @@
 import {
+    CreationOptional,
     DataTypes,
     InferAttributes,
     InferCreationAttributes,
@@ -8,10 +9,12 @@ import {
 import { sequelize } from "../../common/database/sequelize";
 
 export class Document extends Model<InferAttributes<Document>, InferCreationAttributes<Document>> {
-    declare id: number;
+    declare id: CreationOptional<number>;
     declare source: string;
     declare originalFilename: string;
     declare content: string;
+    declare decisions: CreationOptional<string[]>;
+    declare actionItems: CreationOptional<string[]>;
 }
 
 Document.init(
@@ -32,6 +35,16 @@ Document.init(
         content: {
             type: DataTypes.TEXT,
             allowNull: false,
+        },
+        decisions: {
+            type: DataTypes.JSONB,
+            allowNull: false,
+            defaultValue: [],
+        },
+        actionItems: {
+            type: DataTypes.JSONB,
+            allowNull: false,
+            defaultValue: [],
         },
     },
     {

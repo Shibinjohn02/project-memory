@@ -1,3 +1,5 @@
+import { MeetingExtractionResult } from "../../modules/documents/document.types";
+
 export interface Extractor {
-  extract(content: string): unknown;
+  extract(content: string): MeetingExtractionResult;
 }

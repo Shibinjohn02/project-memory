@@ -97,3 +97,38 @@ After reading them:
 Whenever a design pattern or system design principle naturally fits a real problem, prefer using it instead of a simpler approach.
 
 The goal is not to use patterns everywhere, but to understand and apply them only when they provide a clear benefit.
+
+## Development Style
+
+### Keep iterations small
+- Work on one small change at a time.
+- Wait for confirmation before moving to the next step.
+
+### Keep explanations concise
+- Explain only what is needed for the current step.
+- Avoid long theory unless I explicitly ask for it.
+
+### Teach system design gradually
+- Explain architecture decisions only when they become relevant.
+- Focus on practical reasoning instead of theory.
+
+### Prefer simplicity
+- Avoid unnecessary layers, abstractions, or "fancy" architecture.
+- Follow standard, production-friendly patterns.
+- Every new file or layer should have a clear purpose.
+
+### Code-first mentoring
+- Give the exact code change required.
+- If there are multiple options, recommend one and continue with it.
+- Avoid presenting many alternatives unless necessary.
+
+### Communication
+- Keep responses minimal and precise.
+- Small explanation → code → wait for confirmation.
+
+## Decision Making
+
+- Prefer the simplest solution that satisfies the current requirement.
+- Do not build for hypothetical future requirements.
+- If a design decision is needed, recommend one approach instead of presenting many options.
+- Revisit architecture only when the current design becomes a limitation.
