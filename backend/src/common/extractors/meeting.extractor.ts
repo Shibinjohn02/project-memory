@@ -1,23 +1,28 @@
 import { Extractor } from "./extractor.interface";
-import { MeetingExtractionResult } from "../../modules/documents/document.types";
+import { ActionItem, Decision, MeetingExtractionResult } from "../../modules/documents/document.types";
 
 
-function extractActionItems(sentences: string[]) {
+function extractActionItems(sentences: string[]): ActionItem[] {
   return sentences
     .filter((sentence) =>
       /\b(will|should|must|need to)\b/i.test(sentence)
     )
-    .map((sentence) =>
-      sentence
+    .map((sentence) => ({
+      task: sentence
         .replace(/\b(will|should|must|need to)\b/i, "")
-        .trim()
-    );
+        .trim(),
+      status: "pending",
+    }));
 }
 
-function extractDecisions(sentences: string[]) {
-  return sentences.filter((sentence) =>
-    /\b(decided|decision|agreed|approved)\b/i.test(sentence)
-  );
+function extractDecisions(sentences: string[]): Decision[] {
+  return sentences
+    .filter((sentence) =>
+      /\b(decided|decision|agreed|approved)\b/i.test(sentence)
+    )
+    .map((sentence) => ({
+      decision: sentence,
+    }));
 }
 
 function extractDates(sentences: string[]) {

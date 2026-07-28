@@ -12,8 +12,21 @@ export interface MeetingExtractionResult {
   lines: string[];
   paragraphs: string[];
   sentences: string[];
-  decisions: string[];
-  actionItems: string[];
+  decisions: Decision[];
+  actionItems: ActionItem[];
   dates: string[];
   participants: string[];
+}
+
+export interface Decision {
+    decision: string;
+    reason?: string;
+    owner?: string;
+    createdAt?: string;
+}
+
+export interface ActionItem {
+    task: string;
+    owner?: string;
+    status: "pending" | "completed";
 }

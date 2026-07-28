@@ -2,7 +2,7 @@ import { documentRepository } from "./document.repository";
 import { textReader } from "../../common/files/text-reader";
 import { textParser } from "../../common/parsers/text.parser";
 import { extractorFactory } from "../../common/extractors/extractor.factory";
-import { DocumentSource } from "./document.types";
+import { DocumentSource, Decision, ActionItem } from "./document.types";
 import { Document } from "./document.model";
 
 export const documentService = {
@@ -58,13 +58,13 @@ export const documentService = {
     async getAll() {
         return await documentRepository.findAll();
     },
-    
+
     async saveDocument(
         source: string,
         originalFilename: string,
         content: string,
-        decisions: string[],
-        actionItems: string[]
+        decisions: Decision[],
+        actionItems: ActionItem[]
     ) {
         return await Document.create({
             source,
@@ -73,6 +73,22 @@ export const documentService = {
             decisions,
             actionItems,
         });
-    }
+    },
+
+    async deleteById(id: number) {
+        const deleted = await documentRepository.deleteById(id);
+
+        if (!deleted) {
+            throw new Error("Document not found.");
+        }
+
+        return {
+            message: "Document deleted successfully.",
+        };
+    },
+
+    async getBySource(source: DocumentSource) {
+        return await documentRepository.findBySource(source);
+    },
 
 };

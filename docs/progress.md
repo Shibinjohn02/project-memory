@@ -52,16 +52,122 @@ Create the Documents module.
 
 ---
 
-## Next Session
+## Completed
 
-### Task
+### Document Module
 
-Create the Documents module.
+* Implemented document upload API.
+* Added document persistence using PostgreSQL + Sequelize.
+* Stored:
 
-### Goal
+  * Source
+  * Original filename
+  * Content
+  * Decisions
+  * Action items
+* Implemented document deletion.
+* Implemented document retrieval by ID.
+* Implemented document listing.
+* Implemented search by document source.
 
-Set up the first feature module following the project's architecture.
+### Validation
 
-### Expected Outcome
+* Introduced reusable Zod validation middleware supporting:
 
-The project will have its first production-ready module structure.
+  * Request body
+  * Query parameters
+  * Route parameters
+* Added validation for upload and search endpoints.
+
+### Memory Module
+
+* Introduced a dedicated `memory.service.ts` to separate extracted knowledge from document lifecycle operations.
+* Implemented:
+
+  * Get Document Memory
+  * Get Action Items
+  * Get Timeline
+
+### Response Mapping
+
+* Added `memory.mapper.ts` to decouple database models from API responses.
+* Introduced response mappers for:
+
+  * Decisions
+  * Action Items
+* Timeline now reuses the same mapper layer.
+
+### Domain Model Improvements
+
+* Introduced structured domain types:
+
+  * `Decision`
+  * `ActionItem`
+* Replaced `string[]` usage across the extraction pipeline with domain objects.
+* Updated:
+
+  * Document model
+  * Meeting extraction result
+  * Save document flow
+  * Memory mappers
+
+### Meeting Extraction
+
+* Refactored decision extraction to return `Decision[]`.
+* Refactored action item extraction to return `ActionItem[]`.
+* Current extraction remains regex-based and serves as the baseline implementation.
+
+## Current Architecture
+
+```text
+Upload
+   ↓
+Reader
+   ↓
+Parser
+   ↓
+Meeting Extractor
+   ↓
+Decision[] / ActionItem[]
+   ↓
+Document Service
+   ↓
+Repository
+   ↓
+PostgreSQL (JSONB)
+```
+
+Memory retrieval flow:
+
+```text
+Repository
+   ↓
+Memory Service
+   ↓
+Memory Mapper
+   ↓
+API Response
+```
+
+## Current APIs
+
+* Health
+* Upload Document
+* Get Documents
+* Search Documents
+* Get Document
+* Delete Document
+* Get Document Memory
+* Get Action Items
+* Get Timeline
+
+## Next Milestone
+
+Move from simple regex-based extraction to richer structured knowledge extraction by identifying:
+
+* Decision
+* Reason
+* Owner
+* Due date
+* Confidence
+* Relationships between extracted memories
