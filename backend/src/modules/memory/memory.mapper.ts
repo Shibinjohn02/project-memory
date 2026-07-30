@@ -1,4 +1,4 @@
-import type { ActionItem, Decision } from "./document.types";
+import type { ActionItem, Decision } from "../documents/document.types";
 
 export function mapDecisions(decisions: Decision[]) {
     return decisions.map((decision) => ({

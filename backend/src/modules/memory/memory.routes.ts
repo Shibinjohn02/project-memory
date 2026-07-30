@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { memoryController } from "./memory.controller";
+
+const router = Router();
+
+/**
+ * Postman Name: Search Memory
+ */
+router.get("/search", memoryController.search);
+router.post("/ask", memoryController.ask);
+
+export default router;

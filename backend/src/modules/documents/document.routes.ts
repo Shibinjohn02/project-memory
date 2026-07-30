@@ -28,6 +28,7 @@ router.get("/search", validate(searchDocumentSchema), documentController.getBySo
 router.get("/:id/memory", documentController.getMemoryById);
 router.get("/:id/action-items", documentController.getActionItemsById);
 router.get("/:id/timeline", documentController.getTimelineById);
+router.get("/test-llm", documentController.testLLM);
 router.get("/:id", documentController.getById);
 
 router.delete("/:id", documentController.deleteById);

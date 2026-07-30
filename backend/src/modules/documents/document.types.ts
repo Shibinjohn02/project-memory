@@ -23,6 +23,7 @@ export interface Decision {
     reason?: string;
     owner?: string;
     createdAt?: string;
+    confidence?: number;
 }
 
 export interface ActionItem {

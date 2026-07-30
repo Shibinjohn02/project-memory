@@ -20,9 +20,20 @@ function extractDecisions(sentences: string[]): Decision[] {
     .filter((sentence) =>
       /\b(decided|decision|agreed|approved)\b/i.test(sentence)
     )
-    .map((sentence) => ({
-      decision: sentence,
-    }));
+    .map((sentence) => {
+      const parts = sentence.split(/\bbecause\b/i);
+
+      const text = parts[0]
+        .replace(/^Decision:\s*/i, "")
+        .trim();
+
+      return {
+        decision: text
+          .replace(/^.*?\b(decided|decision|agreed|approved)\b\s*(to)?\s*/i, "")
+          .trim(),
+        reason: parts[1]?.trim(),
+      };
+    });
 }
 
 function extractDates(sentences: string[]) {

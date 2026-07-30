@@ -1,5 +1,7 @@
-import { documentRepository } from "./document.repository";
+import { documentRepository } from "../documents/document.repository";
 import { mapActionItems, mapDecisions } from "./memory.mapper";
+import { llmService } from "../documents/llm/llm.service";
+
 
 export const memoryService = {
     async getMemoryById(id: number) {
@@ -52,4 +54,14 @@ export const memoryService = {
             events,
         };
     },
+
+    async search(query: string) {
+        return await documentRepository.search(query);
+    },
+
+    async ask(question: string) {
+        const memories = await this.search(question);
+
+        return await llmService.ask(question, memories);
+    }
 };

@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import { documentService } from "./document.service";
 import { successResponse } from "../../common/responses/success";
 import { DocumentSource } from "./document.types";
-import { memoryService } from "./memory.service";
+import { memoryService } from "../memory/memory.service";
+import { llmService } from "./llm/llm.service";
+
 
 export const documentController = {
     health(_req: Request, res: Response) {
@@ -76,5 +78,22 @@ export const documentController = {
         const timeline = await memoryService.getTimelineById(id);
 
         res.status(200).json(successResponse(timeline));
+    },
+
+    async testLLM(_: Request, res: Response) {
+        const response = await llmService.extractMeetingMemory(`
+            Project Memory - Sprint Planning Meeting
+
+            Decision:
+            The team decided to use PostgreSQL JSONB because the structure may evolve over time.
+
+            Action Item:
+            John will update the deployment documentation before Friday.
+        `);
+
+        res.json({
+            success: true,
+            data: response,
+        });
     }
 };

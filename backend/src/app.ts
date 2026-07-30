@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import { documentRoutes } from "./modules/documents";
+import documentRoutes from "./modules/documents/document.routes";
+import memoryRoutes from "./modules/memory/memory.routes";
 import { errorHandler } from "./common/errors/error-handler"
 
 const app = express();
@@ -20,6 +21,7 @@ app.get("/health", (_, res) => {
 });
 
 app.use("/documents", documentRoutes);
+app.use("/memory", memoryRoutes);
 
 // ALWAYS LAST
 app.use(errorHandler);

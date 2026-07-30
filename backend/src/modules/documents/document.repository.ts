@@ -1,5 +1,6 @@
 import { Document } from "./document.model";
 import { DocumentSource } from "./document.types";
+import { Op } from "sequelize";
 
 export const documentRepository = {
   checkConnection() {
@@ -70,6 +71,17 @@ export const documentRepository = {
         "decisions",
         "actionItems"
       ],
+    });
+  },
+
+  async search(query: string) {
+    return await Document.findAll({
+      where: {
+        content: {
+          [Op.iLike]: `%${query}%`,
+        },
+      },
+      order: [["createdAt", "DESC"]],
     });
   }
 };
