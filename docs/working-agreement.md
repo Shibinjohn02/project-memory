@@ -132,3 +132,18 @@ The goal is not to use patterns everywhere, but to understand and apply them onl
 - Do not build for hypothetical future requirements.
 - If a design decision is needed, recommend one approach instead of presenting many options.
 - Revisit architecture only when the current design becomes a limitation.
+
+
+## Architecture Rules
+
+* Organize the project around the **business domain**, not the current feature.
+* If we are confident a domain (e.g. Memory) is core to the product, create its module from the beginning.
+* Do not create unnecessary layers (controller, routes, repository, etc.) until they are actually needed.
+* Avoid moving files between modules later. Prefer stable module boundaries.
+* Refactor only when it:
+
+  * fixes a bug,
+  * enables the next feature,
+  * removes existing complexity or duplication,
+  * or better represents the business domain.
+* Every architectural decision should keep the project simple and easy to evolve.
