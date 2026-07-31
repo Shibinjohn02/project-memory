@@ -1,6 +1,7 @@
 import { documentRepository } from "../documents/document.repository";
 import { mapActionItems, mapDecisions } from "./memory.mapper";
 import { llmService } from "../documents/llm/llm.service";
+import { extractKeywords } from "../memory/search.util";
 
 
 export const memoryService = {
@@ -55,8 +56,10 @@ export const memoryService = {
         };
     },
 
-    async search(query: string) {
-        return await documentRepository.search(query);
+    async search(question: string) {
+        const keywords = extractKeywords(question);
+
+        return await documentRepository.search(keywords);
     },
 
     async ask(question: string) {

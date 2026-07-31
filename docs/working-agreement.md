@@ -147,3 +147,12 @@ The goal is not to use patterns everywhere, but to understand and apply them onl
   * removes existing complexity or duplication,
   * or better represents the business domain.
 * Every architectural decision should keep the project simple and easy to evolve.
+
+
+## Code Evolution Rules
+
+- Always check existing code before creating new files, services, controllers, or APIs.
+- Extend existing implementations instead of creating duplicates.
+- Every new abstraction must solve a current problem, not a hypothetical future problem.
+- Reuse existing modules whenever possible.
+- If similar code already exists, refactor or reuse it instead of copying it.

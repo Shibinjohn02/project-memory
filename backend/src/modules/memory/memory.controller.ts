@@ -17,5 +17,5 @@ export const memoryController = {
         const result = await memoryService.ask(question);
 
         return res.status(200).json(successResponse(result));
-    }
+    },
 };

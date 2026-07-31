@@ -74,12 +74,14 @@ export const documentRepository = {
     });
   },
 
-  async search(query: string) {
+  async search(keywords: string[]) {
     return await Document.findAll({
       where: {
-        content: {
-          [Op.iLike]: `%${query}%`,
-        },
+        [Op.or]: keywords.map((keyword) => ({
+          content: {
+            [Op.iLike]: `%${keyword}%`,
+          },
+        })),
       },
       order: [["createdAt", "DESC"]],
     });

@@ -10,8 +10,9 @@ export const llmService = {
     );
   },
 
-  async ask(question: string, context: unknown) {
-    return await mockProvider.ask(question, context);
+  async ask(question: string, memories: any[]) {
+    return await mockProvider.ask(question, memories);
   },
+
 };
 
