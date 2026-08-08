@@ -88,15 +88,6 @@ Create the Documents module.
   * Get Action Items
   * Get Timeline
 
-### Response Mapping
-
-* Added `memory.mapper.ts` to decouple database models from API responses.
-* Introduced response mappers for:
-
-  * Decisions
-  * Action Items
-* Timeline now reuses the same mapper layer.
-
 ### Domain Model Improvements
 
 * Introduced structured domain types:

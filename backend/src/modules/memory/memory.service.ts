@@ -1,60 +1,28 @@
 import { documentRepository } from "../documents/document.repository";
 import { memoryRepository } from "../memory/memory.repository";
-import { mapActionItems, mapDecisions } from "./memory.mapper";
 import { llmService } from "../documents/llm/llm.service";
 import { extractKeywords } from "../memory/search.util";
 import { rank } from "./memory.ranker";
 import { buildMemoryContext } from "./memory.context";
 
 export const memoryService = {
-    async getMemoryById(id: number) {
-        const memory = await documentRepository.findMemoryById(id);
-
-        if (!memory) {
-            throw new Error("Document not found.");
-        }
-
-        return {
-            documentId: memory.id,
-            decisions: mapDecisions(memory.decisions ?? []),
-        };
-    },
-
-    async getActionItemsById(id: number) {
-        const document = await documentRepository.findActionItemsById(id);
-
-        if (!document) {
-            throw new Error("Document not found.");
-        }
-
-        return {
-            documentId: document.id,
-            actionItems: mapActionItems(document.actionItems ?? []),
-        };
-    },
-
     async getTimelineById(id: number) {
-        const document = await documentRepository.findTimelineById(id);
+        const document = await documentRepository.findById(id);
 
         if (!document) {
             throw new Error("Document not found.");
         }
 
-        const events = [
-            ...mapDecisions(document.decisions ?? []).map((item) => ({
-                type: "decision",
-                ...item,
-            })),
-
-            ...mapActionItems(document.actionItems ?? []).map((item) => ({
-                type: "action-item",
-                ...item,
-            })),
-        ];
+        const memories = await memoryRepository.findByDocumentId(id);
 
         return {
             documentId: document.id,
-            events,
+            events: memories.map((memory) => ({
+                id: memory.id,
+                type: memory.type,
+                content: memory.content,
+                metadata: memory.metadata
+            })),
         };
     },
 

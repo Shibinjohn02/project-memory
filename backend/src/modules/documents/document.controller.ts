@@ -55,22 +55,6 @@ export const documentController = {
         res.status(200).json(successResponse(documents));
     },
 
-    async getMemoryById(req: Request, res: Response) {
-        const id = Number(req.params.id);
-
-        const memory = await memoryService.getMemoryById(id);
-
-        res.status(200).json(successResponse(memory));
-    },
-
-    async getActionItemsById(req: Request, res: Response) {
-        const id = Number(req.params.id);
-
-        const actionItems = await memoryService.getActionItemsById(id);
-
-        res.status(200).json(successResponse(actionItems));
-    },
-
     async getTimelineById(req: Request, res: Response) {
         const id = Number(req.params.id);
 

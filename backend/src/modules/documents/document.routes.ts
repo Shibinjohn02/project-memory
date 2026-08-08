@@ -24,9 +24,6 @@ router.get(
 
 router.get("/", documentController.getAll);
 router.get("/search", validate(searchDocumentSchema), documentController.getBySource);
-
-router.get("/:id/memory", documentController.getMemoryById);
-router.get("/:id/action-items", documentController.getActionItemsById);
 router.get("/:id/timeline", documentController.getTimelineById);
 router.get("/test-llm", documentController.testLLM);
 router.get("/:id", documentController.getById);

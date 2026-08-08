@@ -7,15 +7,12 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../common/database/sequelize";
-import type { Decision, ActionItem } from "./document.types";
 
 export class Document extends Model<InferAttributes<Document>, InferCreationAttributes<Document>> {
     declare id: CreationOptional<number>;
     declare source: string;
     declare originalFilename: string;
     declare content: string;
-    declare decisions: CreationOptional<Decision[]>;
-    declare actionItems: CreationOptional<ActionItem[]>;
 }
 
 Document.init(
@@ -36,17 +33,7 @@ Document.init(
         content: {
             type: DataTypes.TEXT,
             allowNull: false,
-        },
-        decisions: {
-            type: DataTypes.JSONB,
-            allowNull: false,
-            defaultValue: [],
-        },
-        actionItems: {
-            type: DataTypes.JSONB,
-            allowNull: false,
-            defaultValue: [],
-        },
+        }
     },
     {
         sequelize,

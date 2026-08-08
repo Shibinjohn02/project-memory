@@ -28,9 +28,7 @@ export const documentService = {
         const document = await this.saveDocument(
             source,
             file.originalname,
-            parsed.normalizedText,
-            extracted.decisions,
-            extracted.actionItems
+            parsed.normalizedText
         );
 
         await memoryRepository.bulkCreate([
@@ -75,8 +73,6 @@ export const documentService = {
             id: document.id,
             source: document.source,
             originalFilename: document.originalFilename,
-            decisions: document.decisions,
-            actionItems: document.actionItems,
         };
     },
 
@@ -87,16 +83,12 @@ export const documentService = {
     async saveDocument(
         source: string,
         originalFilename: string,
-        content: string,
-        decisions: Decision[],
-        actionItems: ActionItem[]
+        content: string
     ) {
         return await Document.create({
             source,
             originalFilename,
             content,
-            decisions,
-            actionItems,
         });
     },
 

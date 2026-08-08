@@ -42,38 +42,6 @@ export const documentRepository = {
     });
   },
 
-  async findMemoryById(id: number) {
-    return await Document.findByPk(id, {
-      attributes: [
-        "id",
-        "source",
-        "originalFilename",
-        "decisions",
-        "actionItems",
-        "createdAt",
-      ],
-    });
-  },
-
-  async findActionItemsById(id: number) {
-    return await Document.findByPk(id, {
-      attributes: [
-        "id",
-        "actionItems",
-      ],
-    });
-  },
-
-  async findTimelineById(id: number) {
-    return await Document.findByPk(id, {
-      attributes: [
-        "id",
-        "decisions",
-        "actionItems"
-      ],
-    });
-  },
-
   async search(keywords: string[]) {
     return await Document.findAll({
       where: {
