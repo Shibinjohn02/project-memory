@@ -4,3 +4,4 @@
  */
 
 import "../../modules/documents/document.model";
+import "../../modules/memory/memory.model";

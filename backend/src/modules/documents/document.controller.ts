@@ -49,7 +49,6 @@ export const documentController = {
 
     async getBySource(req: Request, res: Response) {
         const { source } = req.query as { source: DocumentSource };
-        console.log('source=', source)
 
         const documents = await documentService.getBySource(source);
 

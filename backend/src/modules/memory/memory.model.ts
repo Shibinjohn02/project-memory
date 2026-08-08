@@ -7,29 +7,31 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../common/database/sequelize";
-import type { Decision, ActionItem } from "./document.types";
+import type { MemoryType } from "./memory.types";
 
-export class Document extends Model<InferAttributes<Document>, InferCreationAttributes<Document>> {
+export class Memory extends Model<
+    InferAttributes<Memory>,
+    InferCreationAttributes<Memory>
+> {
     declare id: CreationOptional<number>;
-    declare source: string;
-    declare originalFilename: string;
+    declare documentId: number;
+    declare type: MemoryType;
     declare content: string;
-    declare decisions: CreationOptional<Decision[]>;
-    declare actionItems: CreationOptional<ActionItem[]>;
+    declare metadata: CreationOptional<Record<string, unknown>>;
 }
 
-Document.init(
+Memory.init(
     {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },
-        source: {
-            type: DataTypes.STRING,
+        documentId: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
-        originalFilename: {
+        type: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -37,20 +39,15 @@ Document.init(
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        decisions: {
+        metadata: {
             type: DataTypes.JSONB,
             allowNull: false,
-            defaultValue: [],
-        },
-        actionItems: {
-            type: DataTypes.JSONB,
-            allowNull: false,
-            defaultValue: [],
+            defaultValue: {},
         },
     },
     {
         sequelize,
-        tableName: "documents",
+        tableName: "memories",
         timestamps: true,
         underscored: true,
     }

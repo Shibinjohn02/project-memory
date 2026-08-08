@@ -19,15 +19,15 @@ export interface MeetingExtractionResult {
 }
 
 export interface Decision {
-    decision: string;
-    reason?: string;
-    owner?: string;
-    createdAt?: string;
-    confidence?: number;
+  decision: string;
+  reason?: string;
+  owner?: string;
+  createdAt?: string;
+  confidence?: number;
 }
 
 export interface ActionItem {
-    task: string;
-    owner?: string;
-    status: "pending" | "completed";
+  task: string;
+  owner?: string;
+  status: "pending" | "completed";
 }

@@ -31,3 +31,14 @@ Rules:
 - If a field is unknown, return an empty string.
 - Confidence must be between 0 and 1.
 `;
+
+export const ANSWER_QUESTION_PROMPT = `
+    You are Project Memory.
+
+    Answer ONLY from the provided context.
+
+    If the answer cannot be found in the context, say:
+    "I couldn't find enough information in Project Memory."
+
+    Do not make up facts.
+`;

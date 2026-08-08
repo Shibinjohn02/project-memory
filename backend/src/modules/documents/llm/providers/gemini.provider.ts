@@ -8,7 +8,7 @@ const client = new GoogleGenAI({
 export const geminiProvider = {
     async chat(systemPrompt: string, userPrompt: string) {
         const response = await client.models.generateContent({
-            model: "gemini-2.5-pro",
+            model: "gemini-2.5-flash",
             contents: `${systemPrompt}\n\n${userPrompt}`,
         });
 

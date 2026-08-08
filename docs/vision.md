@@ -104,3 +104,13 @@ Engineering teams don't lose code.
 They lose context.
 
 Project Memory exists to preserve that context.
+
+---
+
+## Core Principle
+
+Documents are ingestion artifacts.
+
+Memories are the primary domain model.
+
+Every feature in Project Memory should operate on memories rather than raw documents whenever possible.

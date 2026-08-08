@@ -1,18 +1,36 @@
 import { Extractor } from "./extractor.interface";
 import { ActionItem, Decision, MeetingExtractionResult } from "../../modules/documents/document.types";
 
-
 function extractActionItems(sentences: string[]): ActionItem[] {
-  return sentences
-    .filter((sentence) =>
-      /\b(will|should|must|need to)\b/i.test(sentence)
-    )
-    .map((sentence) => ({
-      task: sentence
-        .replace(/\b(will|should|must|need to)\b/i, "")
-        .trim(),
+  const actionItems: ActionItem[] = [];
+
+  for (const sentence of sentences) {
+    const normalized = sentence.trim();
+
+    // Ignore non-action statements
+    if (
+      /^Reason:/i.test(normalized) ||
+      /^Decision:/i.test(normalized)
+    ) {
+      continue;
+    }
+
+    const ownerMatch = normalized.match(
+      /^(?:Action Item:\s*)?([A-Z][a-zA-Z]+)\s+(?:will|should|must|need to)\s+(.+)$/i
+    );
+
+    if (!ownerMatch) {
+      continue;
+    }
+
+    actionItems.push({
+      owner: ownerMatch[1],
+      task: ownerMatch[2].trim(),
       status: "pending",
-    }));
+    });
+  }
+
+  return actionItems;
 }
 
 function extractDecisions(sentences: string[]): Decision[] {

@@ -4,6 +4,7 @@ import { textParser } from "../../common/parsers/text.parser";
 import { extractorFactory } from "../../common/extractors/extractor.factory";
 import { DocumentSource, Decision, ActionItem } from "./document.types";
 import { Document } from "./document.model";
+import { memoryRepository } from "../memory/memory.repository";
 
 export const documentService = {
     getHealthStatus() {
@@ -31,6 +32,30 @@ export const documentService = {
             extracted.decisions,
             extracted.actionItems
         );
+
+        await memoryRepository.bulkCreate([
+            ...extracted.decisions.map((decision) => ({
+                documentId: document.id,
+                type: "decision" as const,
+                content: decision.decision,
+                metadata: {
+                    reason: decision.reason,
+                    owner: decision.owner,
+                    createdAt: decision.createdAt,
+                    confidence: decision.confidence,
+                },
+            })),
+
+            ...extracted.actionItems.map((actionItem) => ({
+                documentId: document.id,
+                type: "action-item" as const,
+                content: actionItem.task,
+                metadata: {
+                    owner: actionItem.owner,
+                    status: actionItem.status,
+                },
+            })),
+        ]);
 
         return {
             documentId: document.id,
