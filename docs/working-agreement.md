@@ -136,17 +136,17 @@ The goal is not to use patterns everywhere, but to understand and apply them onl
 
 ## Architecture Rules
 
-* Organize the project around the **business domain**, not the current feature.
-* If we are confident a domain (e.g. Memory) is core to the product, create its module from the beginning.
-* Do not create unnecessary layers (controller, routes, repository, etc.) until they are actually needed.
-* Avoid moving files between modules later. Prefer stable module boundaries.
-* Refactor only when it:
+ Organize the project around the business domain, not the current feature.
+ If we are confident a domain (e.g. Memory) is core to the product, create its module from the beginning.
+ Do not create unnecessary layers (controller, routes, repository, etc.) until they are actually needed.
+ Avoid moving files between modules later. Prefer stable module boundaries.
+ Refactor only when it:
 
-  * fixes a bug,
-  * enables the next feature,
-  * removes existing complexity or duplication,
-  * or better represents the business domain.
-* Every architectural decision should keep the project simple and easy to evolve.
+   fixes a bug,
+   enables the next feature,
+   removes existing complexity or duplication,
+   or better represents the business domain.
+ Every architectural decision should keep the project simple and easy to evolve.
 
 
 ## Code Evolution Rules
@@ -156,3 +156,14 @@ The goal is not to use patterns everywhere, but to understand and apply them onl
 - Every new abstraction must solve a current problem, not a hypothetical future problem.
 - Reuse existing modules whenever possible.
 - If similar code already exists, refactor or reuse it instead of copying it.
+
+## Build the Right Architecture Early
+
+When a component, feature, or architectural decision is certain to be part of the project, implement it in its proper place from the beginning rather than taking a temporary shortcut just to save time.
+
+Short-term shortcuts that mix responsibilities or defer a clearly required architectural decision can create unnecessary refactoring later.
+
+Rule:
+
+> If we know we will need it, build it correctly now.
+> If we don't need it yet, don't build it prematurely.

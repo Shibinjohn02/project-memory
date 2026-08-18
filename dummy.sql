@@ -110,3 +110,14 @@ NOW()
 );
 
 TRUNCATE TABLE memories, documents RESTART IDENTITY CASCADE;
+
+
+
+CREATE EXTENSION IF NOT EXISTS vector;
+
+SELECT extname, extversion
+FROM pg_extension
+WHERE extname = 'vector';
+
+
+ALTER TABLE memories ADD COLUMN embedding vector(1024);

@@ -8,7 +8,6 @@ import {
 
 import { sequelize } from "../../common/database/sequelize";
 import type { MemoryType } from "./memory.types";
-
 export class Memory extends Model<
     InferAttributes<Memory>,
     InferCreationAttributes<Memory>

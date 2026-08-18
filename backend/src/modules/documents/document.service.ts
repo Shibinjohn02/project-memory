@@ -5,6 +5,7 @@ import { extractorFactory } from "../../common/extractors/extractor.factory";
 import { DocumentSource, Decision, ActionItem } from "./document.types";
 import { Document } from "./document.model";
 import { memoryRepository } from "../memory/memory.repository";
+import { embeddingService } from "../memory/embedding/embedding.instance";
 
 export const documentService = {
     getHealthStatus() {
@@ -31,7 +32,7 @@ export const documentService = {
             parsed.normalizedText
         );
 
-        await memoryRepository.bulkCreate([
+        const memories = [
             ...extracted.decisions.map((decision) => ({
                 documentId: document.id,
                 type: "decision" as const,
@@ -53,7 +54,20 @@ export const documentService = {
                     status: actionItem.status,
                 },
             })),
-        ]);
+        ];
+
+        const createdMemories = await memoryRepository.bulkCreate(memories);
+
+        const embeddings = await embeddingService.generateMany(
+            createdMemories.map((memory) => memory.content)
+        );
+
+        await memoryRepository.updateEmbeddings(
+            createdMemories.map((memory, index) => ({
+                id: memory.id,
+                embedding: embeddings[index],
+            }))
+        );
 
         return {
             documentId: document.id,
