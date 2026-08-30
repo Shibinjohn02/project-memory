@@ -4,20 +4,21 @@
 
 ### Completed
 
-- Finalized the product vision and scope.
-- Created the project documentation.
-- Defined project principles.
-- Created the development roadmap.
-- Added architecture decision records (ADR).
-- Defined the ingestion flow.
-- Created schemas for:
-  - Meeting
-  - Jira Ticket
-  - Pull Request
-  - Commit
-- Initialized the Express + TypeScript backend.
-- Configured the project structure.
-- Implemented the `/health` endpoint.
+* Finalized the product vision and scope.
+* Created the project documentation.
+* Defined project principles.
+* Created the development roadmap.
+* Added architecture decision records (ADR).
+* Defined the ingestion flow.
+* Created schemas for:
+
+  * Meeting
+  * Jira Ticket
+  * Pull Request
+  * Commit
+* Initialized the Express + TypeScript backend.
+* Configured the project structure.
+* Implemented the `/health` endpoint.
 
 ---
 
@@ -47,8 +48,8 @@ Create the Documents module.
 
 ## Learnings
 
-- Product design is more important than implementation.
-- Project Memory stores knowledge, not documents.
+* Product design is more important than implementation.
+* Project Memory stores knowledge, not documents.
 
 ---
 
@@ -108,7 +109,56 @@ Create the Documents module.
 * Refactored action item extraction to return `ActionItem[]`.
 * Current extraction remains regex-based and serves as the baseline implementation.
 
+### Memory Storage
+
+* Added PostgreSQL `JSONB` storage for extracted memories.
+* Added vector embeddings for semantic memory retrieval.
+* Added memory types:
+
+  * `decision`
+  * `action-item`
+  * `fact`
+  * `risk`
+  * `constraint`
+  * `open-question`
+
+### Semantic Memory Search
+
+* Implemented semantic search using embeddings.
+* Added LLM-based query understanding.
+* Query understanding extracts:
+
+  * `searchQuery`
+  * `memoryType`
+  * `status`
+* Added filtering by `memoryType`.
+* Added status filtering using the memory `metadata` JSONB field.
+* Removed the distance threshold from active query filtering while retaining similarity distance for ranking.
+* Verified semantic search ranking and filtering through API testing.
+
+### Memory Q&A
+
+* Added an answer generation layer using the existing Groq provider.
+* Added `AnswerGeneratorProvider` abstraction.
+* Implemented `GroqAnswerGeneratorProvider`.
+* Connected memory retrieval with answer generation.
+* Added the memory answer API.
+* Answer generation receives the original question and relevant retrieved memories.
+* Added hallucination protection:
+
+  * Answers must use only retrieved memories.
+  * The LLM must not use outside knowledge or assumptions.
+  * The system explicitly handles questions for which the available memories do not contain enough information.
+* Added fallback handling when no relevant memories are found.
+* Verified:
+
+  * Questions with known answers.
+  * Questions with no relevant memories.
+  * Questions where related information exists but the requested detail is not available.
+
 ## Current Architecture
+
+### Document Ingestion
 
 ```text
 Upload
@@ -128,16 +178,24 @@ Repository
 PostgreSQL (JSONB)
 ```
 
-Memory retrieval flow:
+### Memory Retrieval & Q&A
 
 ```text
-Repository
+User Question
    ↓
-Memory Service
+Query Understanding (LLM)
    ↓
-Memory Mapper
+Search Query + Memory Type + Status
    ↓
-API Response
+Embedding
+   ↓
+Semantic Search
+   ↓
+Relevant Memories
+   ↓
+Answer Generator (LLM)
+   ↓
+Final Answer
 ```
 
 ## Current APIs
@@ -151,14 +209,52 @@ API Response
 * Get Document Memory
 * Get Action Items
 * Get Timeline
+* Memory Search
+* Memory Answer
+
+## Current Milestone
+
+✅ Memory Retrieval + Q&A Pipeline Complete
+
+The system can now take a natural-language question, understand the intended memory search, retrieve relevant memories using semantic search and metadata filters, and generate an answer grounded in those memories.
 
 ## Next Milestone
 
-Move from simple regex-based extraction to richer structured knowledge extraction by identifying:
+Improve the quality and richness of extracted memories by moving toward structured knowledge extraction.
+
+Focus areas:
 
 * Decision
 * Reason
 * Owner
 * Due date
 * Confidence
-* Relationships between extracted memories
+* Relationships between memories
+* Richer memory metadata
+* Improved extraction quality beyond the current regex baseline
+
+
+## External API Limits
+
+### Groq
+
+Current model: `openai/gpt-oss-20b`
+
+- Requests per minute: 30
+- Requests per day: 1,000
+- Tokens per minute: 8,000
+- Tokens per day: 200,000
+
+Used for:
+- Query understanding
+- Answer generation
+
+### Jina
+
+Used for:
+- Text embeddings
+
+- Free token pool: 10 million tokens
+- This is a one-time free token pool, not a daily limit.
+
+> Note: These limits are based on the current provider plans and should be re-checked if the plan or provider changes.

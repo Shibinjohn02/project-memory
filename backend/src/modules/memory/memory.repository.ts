@@ -1,4 +1,4 @@
-import { InferCreationAttributes, Op } from "sequelize";
+import { InferCreationAttributes, Op, QueryTypes } from "sequelize";
 import { Memory } from "./memory.model";
 import type { CreateMemory } from "./memory.types";
 import { sequelize } from "../../common/database/sequelize";
@@ -76,35 +76,47 @@ export const memoryRepository = {
         });
     },
 
-    async semanticSearch(embedding: number[], limit: number = 5, maxDistance: number = 0.8, memoryType?: MemoryType, status?: string) {
+    async semanticSearch(
+        embedding: number[],
+        limit: number,
+        maxDistance: number,
+        memoryType?: MemoryType,
+        status?: string
+    ): Promise<Memory[]> {
         const vector = `[${embedding.join(",")}]`;
-        const typeCondition = memoryType ? "AND type = :memoryType" : "";
-        const statusCondition = status ? "AND metadata->>'status' = :status": "";
 
-        const [memories] = await sequelize.query(
+        const typeCondition = memoryType
+            ? "AND type = :memoryType"
+            : "";
+
+        const statusCondition = status
+            ? "AND metadata->>'status' = :status"
+            : "";
+
+        const memories = await sequelize.query<Memory>(
             `
-                SELECT
-                    -- id,
-                    -- document_id,
-                    -- type,
-                    content,
-                    -- metadata,
-                    -- created_at,
-                    -- updated_at,
-                    embedding <=> CAST(:embedding AS vector) AS similarity_distance
-                FROM memories
-                WHERE embedding IS NOT NULL
-                -- AND embedding <=> CAST(:embedding AS vector) <= :maxDistance
-                    ${typeCondition}
-                    ${statusCondition}
-                ORDER BY embedding <=> CAST(:embedding AS vector)
-                LIMIT :limit
-            `,
+            SELECT
+                -- id,
+                -- document_id,
+                -- type,
+                content,
+                -- metadata,
+                -- created_at,
+                -- updated_at,
+                embedding <=> CAST(:embedding AS vector) AS similarity_distance
+            FROM memories
+            WHERE embedding IS NOT NULL
+            -- AND embedding <=> CAST(:embedding AS vector) <= :maxDistance
+                ${typeCondition}
+                ${statusCondition}
+            ORDER BY embedding <=> CAST(:embedding AS vector)
+            LIMIT :limit
+        `,
             {
+                type: QueryTypes.SELECT,
                 replacements: {
                     embedding: vector,
                     limit,
-                    // maxDistance,
                     memoryType,
                     status
                 },

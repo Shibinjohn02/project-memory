@@ -5,8 +5,9 @@ import { extractKeywords } from "../memory/search.util";
 import { rank } from "./memory.ranker";
 import { buildMemoryContext } from "./memory.context";
 import { embeddingService } from "./embedding/embedding.instance";
-import { QueryUnderstandingService } from "./query-understanding.service";
-import { LLMQueryUnderstandingProvider } from "./llm-query-understanding.provider";
+import { QueryUnderstandingService } from "./search/query-understanding.service";
+import { LLMQueryUnderstandingProvider } from "./search/llm-query-understanding.provider";
+import { answerGenerator } from "./answer/answer-generator.instance";
 
 const queryUnderstandingService = new QueryUnderstandingService(
     new LLMQueryUnderstandingProvider()
@@ -85,5 +86,33 @@ export const memoryService = {
                 metadata: item.memory.metadata,
             })),
         };
+    },
+
+    async answer(question: string) {
+        const understoodQuery = await queryUnderstandingService.understand(question);
+
+        const embedding =
+            await embeddingService.generate(
+                understoodQuery.searchQuery,
+                "retrieval.query"
+            );
+
+        const memories =
+            await memoryRepository.semanticSearch(
+                embedding,
+                5,
+                0.8,
+                understoodQuery.memoryType ?? undefined,
+                understoodQuery.status
+            );
+
+        if (memories.length === 0) {
+            return "I couldn't find any relevant information in memory.";
+        }
+
+        return await answerGenerator.generate(
+            question,
+            memories
+        );
     }
 };

@@ -1,4 +1,4 @@
-import { groqProvider } from "../documents/llm/providers/groq.provider";
+import { groqProvider } from "../../documents/llm/providers/groq.provider";
 import type { MemorySearchQuery } from "./memory-search.types";
 import type { QueryUnderstandingProvider } from "./query-understanding.provider";
 
@@ -19,6 +19,12 @@ export class LLMQueryUnderstandingProvider
             Use memoryType only when the question clearly asks about a specific type of memory.
             Otherwise return null.
 
+            Always provide a meaningful searchQuery when the user asks a valid question.
+            Do not return an empty searchQuery.
+
+            For questions asking "why", "how", "when", "who", or similar,
+            preserve the important subject and context in the searchQuery.
+
             Examples:
 
             Question: "Which database did we choose?"
@@ -32,8 +38,13 @@ export class LLMQueryUnderstandingProvider
 
             Question: "Tell me about PostgreSQL"
             Output: {"searchQuery":"PostgreSQL","memoryType":null,"status":null}
+
+            Question: "Why did we choose PostgreSQL?"
+            Output: {"searchQuery":"reason for choosing PostgreSQL","memoryType":null,"status":null}
         `;
 
+        console.log("QUESTION:", question);
+        
         const response = await groqProvider.chat(
             systemPrompt,
             question

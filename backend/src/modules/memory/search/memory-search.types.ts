@@ -1,4 +1,4 @@
-import type { MemoryType } from "./memory.types";
+import type { MemoryType } from "../memory.types";
 
 export interface MemorySearchQuery {
     searchQuery: string;

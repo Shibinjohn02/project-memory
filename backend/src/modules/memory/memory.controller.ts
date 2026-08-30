@@ -26,4 +26,14 @@ export const memoryController = {
 
         return res.status(200).json(successResponse(result));
     },
+
+    async answer(req: Request, res: Response) {
+        const question = String(req.query.q || "");
+
+        const answer = await memoryService.answer(question);
+
+        return res.status(200).json(
+            successResponse(answer)
+        );
+    },
 };
