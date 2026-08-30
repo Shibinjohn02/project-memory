@@ -59,9 +59,10 @@ export const documentService = {
         const createdMemories = await memoryRepository.bulkCreate(memories);
 
         const embeddings = await embeddingService.generateMany(
-            createdMemories.map((memory) => memory.content)
+            createdMemories.map((memory) => memory.content),
+            "retrieval.passage"
         );
-
+        
         await memoryRepository.updateEmbeddings(
             createdMemories.map((memory, index) => ({
                 id: memory.id,

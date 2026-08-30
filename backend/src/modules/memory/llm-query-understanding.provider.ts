@@ -1,0 +1,44 @@
+import { groqProvider } from "../documents/llm/providers/groq.provider";
+import type { MemorySearchQuery } from "./memory-search.types";
+import type { QueryUnderstandingProvider } from "./query-understanding.provider";
+
+export class LLMQueryUnderstandingProvider
+    implements QueryUnderstandingProvider {
+
+    async understand(question: string): Promise<MemorySearchQuery> {
+        const systemPrompt = `
+            You are a query understanding system for a memory search application.
+
+            Analyze the user's question and return ONLY valid JSON.
+
+            The JSON must have exactly these fields:
+            - searchQuery: a concise search query containing the important meaning of the user's question.
+            - memoryType: one of "decision", "action-item", "fact", "risk", "constraint", "open-question", or null.
+            - status: the status being asked for, such as "pending", "completed", or "in-progress", or null if no status is specified.
+
+            Use memoryType only when the question clearly asks about a specific type of memory.
+            Otherwise return null.
+
+            Examples:
+
+            Question: "Which database did we choose?"
+            Output: {"searchQuery":"database chosen","memoryType":"decision","status":null}
+
+            Question: "What action items are pending?"
+            Output: {"searchQuery":"action items","memoryType":"action-item","status":"pending"}
+
+            Question: "What action items are there?"
+            Output: {"searchQuery":"action items","memoryType":"action-item","status":null}
+
+            Question: "Tell me about PostgreSQL"
+            Output: {"searchQuery":"PostgreSQL","memoryType":null,"status":null}
+        `;
+
+        const response = await groqProvider.chat(
+            systemPrompt,
+            question
+        );
+
+        return JSON.parse(response) as MemorySearchQuery;
+    }
+}

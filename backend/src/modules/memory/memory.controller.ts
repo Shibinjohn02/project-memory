@@ -11,6 +11,14 @@ export const memoryController = {
         return res.status(200).json(successResponse(memories));
     },
 
+    async semanticSearch(req: Request, res: Response) {
+        const query = String(req.query.q || "");
+
+        const memories = await memoryService.semanticSearch(query);
+
+        return res.status(200).json(successResponse(memories));
+    },
+
     async ask(req: Request, res: Response) {
         const { question } = req.body;
 

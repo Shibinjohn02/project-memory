@@ -1,5 +1,9 @@
-export interface EmbeddingProvider {
-    generateEmbedding(text: string): Promise<number[]>;
+export type EmbeddingTask =
+    | "retrieval.query"
+    | "retrieval.passage";
 
-    generateEmbeddings(texts: string[]): Promise<number[][]>;
+export interface EmbeddingProvider {
+    generateEmbedding(text: string, task: EmbeddingTask): Promise<number[]>;
+
+    generateEmbeddings(texts: string[], task: EmbeddingTask): Promise<number[][]>;
 }

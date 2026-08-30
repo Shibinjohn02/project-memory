@@ -4,6 +4,13 @@ import { llmService } from "../documents/llm/llm.service";
 import { extractKeywords } from "../memory/search.util";
 import { rank } from "./memory.ranker";
 import { buildMemoryContext } from "./memory.context";
+import { embeddingService } from "./embedding/embedding.instance";
+import { QueryUnderstandingService } from "./query-understanding.service";
+import { LLMQueryUnderstandingProvider } from "./llm-query-understanding.provider";
+
+const queryUnderstandingService = new QueryUnderstandingService(
+    new LLMQueryUnderstandingProvider()
+);
 
 export const memoryService = {
     async getTimelineById(id: number) {
@@ -30,6 +37,23 @@ export const memoryService = {
         const keywords = extractKeywords(question);
 
         return await memoryRepository.search(keywords);
+    },
+
+    async semanticSearch(question: string) {
+        const understoodQuery = await queryUnderstandingService.understand(question);
+
+        const embedding = await embeddingService.generate(
+            understoodQuery.searchQuery,
+            "retrieval.query"
+        );
+
+        return await memoryRepository.semanticSearch(
+            embedding,
+            5,
+            0.8,
+            understoodQuery.memoryType ?? undefined,
+            understoodQuery.status
+        );
     },
 
     async ask(question: string) {

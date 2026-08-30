@@ -1,5 +1,4 @@
-import type { EmbeddingProvider } from "./embedding.provider";
-
+import type { EmbeddingProvider, EmbeddingTask, } from "./embedding.provider";
 interface JinaEmbeddingResponse {
     data: Array<{
         embedding: number[];
@@ -9,13 +8,13 @@ interface JinaEmbeddingResponse {
 export class JinaEmbeddingProvider implements EmbeddingProvider {
     private readonly apiUrl = "https://api.jina.ai/v1/embeddings";
 
-    async generateEmbedding(text: string): Promise<number[]> {
-        const embeddings = await this.generateEmbeddings([text]);
+    async generateEmbedding(text: string, task: EmbeddingTask): Promise<number[]> {
+        const embeddings = await this.generateEmbeddings([text], task);
 
         return embeddings[0];
     }
 
-    async generateEmbeddings(texts: string[]): Promise<number[][]> {
+    async generateEmbeddings(texts: string[], task: EmbeddingTask): Promise<number[][]> {
         const response = await fetch(this.apiUrl, {
             method: "POST",
             headers: {
@@ -25,8 +24,10 @@ export class JinaEmbeddingProvider implements EmbeddingProvider {
             body: JSON.stringify({
                 model: "jina-embeddings-v3",
                 input: texts,
+                task,
             }),
         });
+
 
         if (!response.ok) {
             const error = await response.text();

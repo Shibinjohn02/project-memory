@@ -7,6 +7,7 @@ const router = Router();
  * Postman Name: Search Memory
  */
 router.get("/search", memoryController.search);
+router.get("/search/semantic", memoryController.semanticSearch);
 router.post("/ask", memoryController.ask);
 
 export default router;
