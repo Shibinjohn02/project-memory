@@ -1,5 +1,6 @@
 import { Extractor } from "./extractor.interface";
 import { ActionItem, Decision, MeetingExtractionResult } from "../../modules/documents/document.types";
+import { groqMeetingExtractionProvider } from "./groq-meeting-extraction.provider";
 
 function extractActionItems(sentences: string[]): ActionItem[] {
   const actionItems: ActionItem[] = [];
@@ -69,7 +70,7 @@ function extractParticipants(sentences: string[]) {
 }
 
 export const meetingExtractor: Extractor = {
-  extract(content: string): MeetingExtractionResult {
+  async extract(content: string): Promise<MeetingExtractionResult> {
     const normalizedContent = content.trim();
 
     const lines = normalizedContent
@@ -89,9 +90,7 @@ export const meetingExtractor: Extractor = {
         .filter(Boolean)
     );
 
-    const actionItems = extractActionItems(sentences);
-
-    const decisions = extractDecisions(sentences);
+    const { decisions, actionItems } = await groqMeetingExtractionProvider.extract(normalizedContent);
 
     const dates = extractDates(sentences);
 

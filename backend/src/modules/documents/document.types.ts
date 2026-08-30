@@ -30,4 +30,6 @@ export interface ActionItem {
   task: string;
   owner?: string;
   status: "pending" | "completed";
+  dueDate?: string;
+  confidence?: number;
 }

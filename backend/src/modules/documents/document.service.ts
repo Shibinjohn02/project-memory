@@ -2,7 +2,7 @@ import { documentRepository } from "./document.repository";
 import { textReader } from "../../common/files/text-reader";
 import { textParser } from "../../common/parsers/text.parser";
 import { extractorFactory } from "../../common/extractors/extractor.factory";
-import { DocumentSource, Decision, ActionItem } from "./document.types";
+import { DocumentSource } from "./document.types";
 import { Document } from "./document.model";
 import { memoryRepository } from "../memory/memory.repository";
 import { embeddingService } from "../memory/embedding/embedding.instance";
@@ -24,7 +24,7 @@ export const documentService = {
 
         const extractor = extractorFactory.get(source);
 
-        const extracted = extractor.extract(parsed.normalizedText);
+        const extracted = await extractor.extract(parsed.normalizedText);
 
         const document = await this.saveDocument(
             source,
@@ -52,6 +52,8 @@ export const documentService = {
                 metadata: {
                     owner: actionItem.owner,
                     status: actionItem.status,
+                    dueDate: actionItem.dueDate,
+                    confidence: actionItem.confidence,
                 },
             })),
         ];

@@ -258,3 +258,113 @@ Used for:
 - This is a one-time free token pool, not a daily limit.
 
 > Note: These limits are based on the current provider plans and should be re-checked if the plan or provider changes.
+
+
+### 📅 31 Aug – 6 Sep: Document + Memory Completion
+
+**31 Aug — Rich Memory Model**
+
+* `Decision` / `ActionItem` structure improve
+* `reason`
+* `owner`
+* `dueDate`
+* `confidence`
+* metadata cleanup
+* DB/schema updates
+
+**1 Sep — LLM Extraction**
+
+* Regex baseline → LLM-based structured extraction
+* Consistent JSON output
+* Validation
+* Multiple memory types
+
+**2 Sep — Memory Storage**
+
+* New extracted fields persist correctly
+* Repository changes
+* Mapping/domain model cleanup
+* Existing APIs verify
+
+**3 Sep — Retrieval**
+
+* Semantic search refinement
+* `memoryType`
+* `status`
+* relevance/ranking
+* multiple relevant memories
+* edge cases
+
+**4 Sep — Answer Generation**
+
+* Grounded answers
+* insufficient information
+* conflicting memories
+* better context formatting
+* source/document awareness
+
+**5 Sep — End-to-End Testing**
+
+* Meeting → memories → DB → embedding → search → answer
+* Known questions
+* Unknown questions
+* Why/how questions
+* filters
+* multiple memories
+* regression testing
+
+**6 Sep — Cleanup + Documentation**
+
+* Remove unnecessary/temporary code
+* interfaces/types cleanup
+* imports/folders cleanup
+* `progress.md`
+* architecture documentation
+* final API verification
+* commit/tag the Document + Memory milestone
+
+### 🎯 End goal
+
+Sunday tak ideally humare paas:
+
+```text
+                DOCUMENT
+                   │
+                   ▼
+              LLM Extraction
+                   │
+                   ▼
+        ┌─────────────────────┐
+        │   Structured Memory │
+        │                     │
+        │ Decision            │
+        │ Action Item         │
+        │ Fact                │
+        │ Risk                │
+        │ Constraint          │
+        │ Open Question       │
+        │                     │
+        │ + reason            │
+        │ + owner             │
+        │ + dueDate           │
+        │ + confidence        │
+        └──────────┬──────────┘
+                   ▼
+              PostgreSQL
+                JSONB
+                   │
+                   ▼
+              Embeddings
+                   │
+                   ▼
+            Semantic Search
+                   │
+                   ▼
+             Query Understanding
+                   │
+                   ▼
+             Answer Generator
+                   │
+                   ▼
+              Grounded Answer
+```
