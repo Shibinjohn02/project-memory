@@ -104,7 +104,8 @@ export const memoryService = {
                 5,
                 0.8,
                 understoodQuery.memoryType ?? undefined,
-                understoodQuery.status
+                understoodQuery.status,
+                understoodQuery.owner ?? undefined
             );
 
         console.log("ANSWER MEMORIES:", JSON.stringify(memories, null, 2));
