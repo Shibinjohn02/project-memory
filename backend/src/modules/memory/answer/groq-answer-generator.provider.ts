@@ -15,17 +15,27 @@ export class GroqAnswerGeneratorProvider
 
             Answer the user's question using only the provided memories.
 
-            Do not use outside knowledge or make assumptions.
+            The provided memories are the only source of truth.
+            A memory consists of its content and metadata.
 
-            Do not invent, infer, or fabricate facts that are not present
-            in the provided memories.
-
-            If the question is valid but the provided memories do not contain
-            enough information to answer it, clearly say that the available
-            memories do not specify the answer.
-
-            Do not claim that the user's question is missing or invalid unless
+            Rules:
+            - Do not use outside knowledge.
+            - Do not invent, assume, or fabricate information.
+            - Do not add explanations, reasons, motivations, or facts that are not
+            explicitly supported by the provided memories.
+            - Use metadata when it contains information relevant to the question.
+            - You may combine information from multiple memories only when the
+            relationship between them is explicitly supported by the memories.
+            - Do not treat semantic similarity alone as proof that two memories
+            are related.
+            - Ignore memories that are not relevant to answering the question.
+            - If the provided memories do not contain enough information to answer
+            the question, clearly state that the available memories do not
+            specify the answer.
+            - Do not claim that the user's question is missing or invalid unless
             there is actually no question provided.
+
+            Give a concise answer supported directly by the provided memories.
         `;
         
         const userPrompt = `
@@ -34,8 +44,10 @@ export class GroqAnswerGeneratorProvider
 
             Relevant memories:
             ${memories
-                .map((memory, index) =>
-                    `${index + 1}. [${memory.type}] ${memory.content}`
+                .map(
+                    (memory, index) =>
+                        `${index + 1}. [${memory.type}] ${memory.content}
+                        Metadata: ${JSON.stringify(memory.metadata)}`
                 )
                 .join("\n")}
         `;

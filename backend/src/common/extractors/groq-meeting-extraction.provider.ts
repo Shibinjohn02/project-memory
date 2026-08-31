@@ -22,6 +22,10 @@ const meetingExtractionSchema = z.object({
             confidence: z.number().min(0).max(1).optional(),
         })
     ),
+
+    dates: z.array(z.string()),
+
+    participants: z.array(z.string()),
 });
 
 export class GroqMeetingExtractionProvider
@@ -32,6 +36,8 @@ export class GroqMeetingExtractionProvider
     ): Promise<{
         decisions: Decision[];
         actionItems: ActionItem[];
+        dates: string[];
+        participants: string[];
     }> {
 
         const systemPrompt = `
@@ -44,7 +50,9 @@ export class GroqMeetingExtractionProvider
 
             {
                 "decisions": [],
-                "actionItems": []
+                "actionItems": [],
+                "dates": [],
+                "participants": []
             }
 
             Each decision must contain:
@@ -60,9 +68,28 @@ export class GroqMeetingExtractionProvider
             - dueDate
             - confidence
 
+            Dates:
+            - Extract only explicit date or deadline expressions.
+            - Return the exact date/deadline phrase only.
+            - Never return the sentence containing the date.
+            - Example:
+                "Ankit will update the migration script by September 3."
+                → "September 3"
+
+            Participants:
+            - Extract only actual person names.
+            - A person's name may appear as an owner of an action item or decision.
+            - Return only the person's name.
+            - Never return a full sentence.
+            - Example:
+                "Ankit will update the migration script."
+                → "Ankit"
+
             Do not invent or assume missing information.
 
-            If a field is not explicitly available, return null.
+            For optional fields inside decisions and actionItems, return null when the information is not explicitly available.
+            
+            For dates and participants, return an empty array when no information is explicitly available.
 
             Confidence must be a number between 0 and 1.
 
@@ -75,10 +102,18 @@ export class GroqMeetingExtractionProvider
 
         const response = await groqProvider.chat(
             systemPrompt,
-            content
+            content,
+            meetingExtractionSchema
         );
 
-        const result = meetingExtractionSchema.parse(JSON.parse(response));
+        const cleanedResponse = response
+            .replace(/^```json\s*/i, "")
+            .replace(/\s*```$/i, "")
+            .trim();
+
+        const result = meetingExtractionSchema.parse(
+            JSON.parse(cleanedResponse)
+        );
 
         return {
             decisions: result.decisions.map((decision) => ({
@@ -95,6 +130,9 @@ export class GroqMeetingExtractionProvider
                 dueDate: actionItem.dueDate ?? undefined,
                 confidence: actionItem.confidence,
             })),
+
+            dates: result.dates,
+            participants: result.participants,
         };
     }
 }

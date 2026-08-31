@@ -81,17 +81,16 @@ export const memoryRepository = {
         limit: number,
         maxDistance: number,
         memoryType?: MemoryType,
-        status?: string
+        status?: string,
+        owner?: string
     ): Promise<Memory[]> {
         const vector = `[${embedding.join(",")}]`;
 
-        const typeCondition = memoryType
-            ? "AND type = :memoryType"
-            : "";
+        const typeCondition = memoryType ? "AND type = :memoryType" : "";
 
-        const statusCondition = status
-            ? "AND metadata->>'status' = :status"
-            : "";
+        const statusCondition = status ? "AND metadata->>'status' = :status" : "";
+
+        const ownerCondition = owner ? "AND metadata->>'owner' = :owner" : "";
 
         const memories = await sequelize.query<Memory>(
             `
@@ -100,7 +99,7 @@ export const memoryRepository = {
                 -- document_id,
                 -- type,
                 content,
-                -- metadata,
+                metadata,
                 -- created_at,
                 -- updated_at,
                 embedding <=> CAST(:embedding AS vector) AS similarity_distance
@@ -109,6 +108,7 @@ export const memoryRepository = {
             -- AND embedding <=> CAST(:embedding AS vector) <= :maxDistance
                 ${typeCondition}
                 ${statusCondition}
+                ${ownerCondition}
             ORDER BY embedding <=> CAST(:embedding AS vector)
             LIMIT :limit
         `,
@@ -118,7 +118,8 @@ export const memoryRepository = {
                     embedding: vector,
                     limit,
                     memoryType,
-                    status
+                    status,
+                    owner
                 },
             }
         );

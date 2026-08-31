@@ -4,4 +4,5 @@ export interface MemorySearchQuery {
     searchQuery: string;
     memoryType: MemoryType | null;
     status?: string;
+    owner?: string;
 }

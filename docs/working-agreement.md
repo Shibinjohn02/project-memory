@@ -167,3 +167,8 @@ Rule:
 
 > If we know we will need it, build it correctly now.
 > If we don't need it yet, don't build it prematurely.
+
+
+## Section: Development / Engineering Principles:
+
+Document-agnostic extraction: Extraction logic must not be hard-coded around specific document formats, sentence patterns, keywords, names, dates, or example data. The system should use generalized, structured extraction approaches that can handle different document types and content variations.

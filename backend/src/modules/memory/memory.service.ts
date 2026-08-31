@@ -53,7 +53,8 @@ export const memoryService = {
             5,
             0.8,
             understoodQuery.memoryType ?? undefined,
-            understoodQuery.status
+            understoodQuery.status,
+            understoodQuery.owner ?? undefined
         );
     },
 
@@ -105,6 +106,8 @@ export const memoryService = {
                 understoodQuery.memoryType ?? undefined,
                 understoodQuery.status
             );
+
+        console.log("ANSWER MEMORIES:", JSON.stringify(memories, null, 2));
 
         if (memories.length === 0) {
             return "I couldn't find any relevant information in memory.";
